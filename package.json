@@ -1,19 +1,25 @@
 {
-  "name": "voting-app",
+  "name": "fcc-voting-app",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "express": "^4.16.2",
-    "mongoose": "^5.0.0-rc2",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-router-dom": "^4.2.2",
-    "react-scripts": "1.0.17"
+  "description": "CRUD, MERN stack, User Auth to CRUD polls and their votes.",
+  "engines": {
+    "node": "6.11.x"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "node server/index.js",
+    "heroku-postbuild": "cd react/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+  },
+  "cacheDirectories": [
+    "node_modules",
+    "react/node_modules"
+  ],
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongoose": "^5.0.0-rc2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jordanleo7/fcc-voting-app"
   }
 }
