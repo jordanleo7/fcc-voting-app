@@ -4,7 +4,7 @@
   "private": true,
   "description": "CRUD, MERN stack, User Auth to CRUD polls and their votes.",
   "engines": {
-    "node": "6.11.x"
+    "node": "8.x"
   },
   "scripts": {
     "start": "node server/index.js",

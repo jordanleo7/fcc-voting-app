@@ -1,6 +1,8 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import AllPolls from './components/AllPolls'
+import NewPoll from './components/NewPoll'
+import ViewPoll from './components/ViewPoll'
 
 // The Main component renders one of the three provided
 // Routes (provided that one matches). Both the /roster
@@ -11,8 +13,10 @@ const Main = () => (
   <main>
     <Switch>
       <Route exact path='/' component={AllPolls}/>
+      <Route exact path='/newpoll' component={NewPoll}/>
+      <Route path='/viewpoll/:id' component={ViewPoll}/>
     </Switch>
   </main>
 )
 
-export default Main
+export default Main;
