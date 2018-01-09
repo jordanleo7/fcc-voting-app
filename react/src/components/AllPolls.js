@@ -25,19 +25,20 @@ class AllPolls extends Component {
 
     let pollList = this.state.list.map(function(poll, index){
       return (
-        <Link to={"/viewpoll/" + poll._id} key={index}>
-          {poll.title}
-        </Link>
+        <li key={poll + index}>
+          <Link to={"/viewpoll/" + poll._id}>
+            {poll.title}
+          </Link>
+        </li>
       )
     });
 
     return(
       <div>
         <h3>All Polls</h3>
-        <div>
+        <ul>
           {pollList}
-        </div>
-        <Link to={"newpoll"}>New Poll</Link>
+        </ul>
       </div>
     )
   }

@@ -32,19 +32,46 @@ app.use(function(req, res, next) {
 
 
 // Answer API requests.
-app.get('/api/test', function (req, res) {
-  res.set('Content-Type', 'application/json');
-  res.send('{"message":"Hello from the custom server!"}');
+
+// Create a poll
+app.post('/api/newpoll', urlEncodedParser, function (req, res, next) {
+
+  let newTitle = req.body.title;
+  let newOptions = req.body.options.split(/\r?\n/);
+  let newCreator = 'John Smith';
+
+  let newPoll = new Poll({
+    title: newTitle,
+    options: [],
+    voted: [],
+    creator: newCreator
+  })
+
+  Poll.create(newPoll)
+    .then(function(){
+      Poll.findOne({title: newTitle})
+        .then(function(poll){
+          let i = 0;
+          for (i = 0; i < newOptions; i++) {
+            let currentNewOption = newOptions[i];
+            poll.options.push({name: currentNewOption, votes: 0});
+          }
+          poll.save();
+        })
+      console.log('Poll created');
+      res.json('Poll created');
+  })
+
 });
 
-// Get all polls
+// Read all polls
 app.get('/api/allpolls', function (req, res, next) {
   Poll.find({}).then(eachOne => {
     res.json(eachOne);
   })
 })
 
-// Get one poll
+// Read one poll
 app.get('/api/poll/:id', function (req, res, next) {
   Poll.find({'_id':req.params.id})
   .then(poll => {
@@ -52,50 +79,13 @@ app.get('/api/poll/:id', function (req, res, next) {
   })
 })
 
-// Create a poll
-app.post('/api/newpoll', urlEncodedParser, function (req, res, next) {
-
-  let newPoll = new Poll({
-    title: req.body.title
-  })
-
-  Poll.create(newPoll)
-  .then(function(){
-    console.log('Poll created')
-    res.json('Poll created')
-  })
-
-/*
-  var createTitle = req.body.title;
-  // Split textarea by enter/return
-  var createOptions = req.body.options.split(/\r?\n/);
-  var createdBy = 'placeholder';
-
-  var createPoll = new Poll({
-    title: createTitle,
-    options: [],
-    voted: [],
-    creator: createdBy
-  });
-
-  // Save poll
-  Poll.create(createPoll).then(function(){
-    Poll.findOne({title: createTitle}).then(function(poll){
-      // Add options to poll
-      var i = 0;
-      for (i = 0; i < createOptions.length; i++) {
-        var currentOption = createOptions[i];
-        poll.options.push({name: currentOption, votes: 0});
-      }
-      poll.save();
+// Delete a poll
+app.delete('/api/deletepoll/:id', function (req, res, next) {
+  Poll.findOneAndRemove({'_id':req.params.id})
+    .then(() => {
+      res.json('Poll deleted');
     })
-    res.json('board created')
-  });
-  */
-
-});
-
-
+})
 
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', function(request, response) {

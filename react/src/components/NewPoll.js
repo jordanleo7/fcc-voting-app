@@ -26,7 +26,8 @@ class NewPoll extends Component {
   handleSubmit(event) {
     event.preventDefault();
     axios.post('/api/newpoll', {
-      title: this.state.title
+      title: this.state.title,
+      options: this.state.options
     })
     .then((response) => {
       console.log(response);

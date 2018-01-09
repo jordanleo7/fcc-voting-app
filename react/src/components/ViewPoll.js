@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import DeletePoll from './DeletePoll';
 
 class ViewPoll extends Component {
 
@@ -24,7 +25,12 @@ class ViewPoll extends Component {
 
   render() {
     return (
-      <div>{JSON.stringify(this.state.poll)}</div>
+      <div>
+        <div>
+          {JSON.stringify(this.state.poll)}
+        </div>
+        <DeletePoll pollId={this.state.pollId}/>
+      </div>
     )
   }
 

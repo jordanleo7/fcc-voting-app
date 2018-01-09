@@ -8,7 +8,7 @@ class Navbar extends Component {
         <h1>Make a Poll</h1>
         <Link to={"/"}>Home</Link>
         <span> | </span>
-        <Link to={"newpoll"}>New</Link>
+        <Link to={"/newpoll"}>New</Link>
       </div>
     )
 
