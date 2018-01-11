@@ -7,7 +7,7 @@ const router = express.Router();
 const app = express();
 const PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({'extended':'false'}));
+app.use(bodyParser.urlencoded({'extended':'true'}));
 
 // MongoDB
 const Poll = require('./Poll');
@@ -47,20 +47,16 @@ app.post('/api/newpoll', urlEncodedParser, function (req, res, next) {
     creator: newCreator
   })
 
-  Poll.create(newPoll)
-    .then(function(){
-      Poll.findOne({title: newTitle})
-        .then(function(poll){
-          let i = 0;
-          for (i = 0; i < newOptions; i++) {
-            let currentNewOption = newOptions[i];
-            poll.options.push({name: currentNewOption, votes: 0});
-          }
-          poll.save();
-        })
-      console.log('Poll created');
-      res.json('Poll created');
-  })
+  Poll.create(newPoll).then(function(){
+    Poll.findOne({title: newTitle}).then(function(poll){
+      newOptions.map((prop, index) => {
+        poll.options.push({name: prop, votes: 0});
+      })
+      poll.save();
+    });
+    console.log('Poll created');
+    res.json('Poll created');
+  });
 
 });
 
@@ -79,9 +75,20 @@ app.get('/api/poll/:id', function (req, res, next) {
   })
 })
 
+// Update a poll
+app.put("/api/vote/:id", urlEncodedParser, function(req, res, next){
+  Poll.findOne({'_id':req.params.id}, function (err, poll) {
+    if (err) return err;
+    console.log(poll, req.body.choice);
+    poll.options[req.body.choice].votes += 1;
+    poll.save();
+    res.send(poll);
+  })
+})
+
 // Delete a poll
 app.delete('/api/deletepoll/:id', function (req, res, next) {
-  Poll.findOneAndRemove({'_id':req.params.id})
+  Poll.findOneAndRemove({'_id': req.params.id})
     .then(() => {
       res.json('Poll deleted');
     })
