@@ -86,6 +86,12 @@ app.put("/api/vote/:id", urlEncodedParser, function(req, res, next){
   })
 })
 
+app.put('/api/newpolloption/:id', urlEncodedParser, function (req, res, next) {
+  Poll.findOneAndUpdate({'_id':req.params.id}, {$addToSet: {options: {name: req.body.name, votes: 0}}}, {new: true}).then(updatedPoll => {
+    res.send(updatedPoll);
+  })
+})
+
 // Delete a poll
 app.delete('/api/deletepoll/:id', function (req, res, next) {
   Poll.findOneAndRemove({'_id': req.params.id})

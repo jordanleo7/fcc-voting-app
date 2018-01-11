@@ -9,10 +9,32 @@ class ViewPoll extends Component {
     this.state = {
       poll : [],
       pollId : this.props.match.params.id,
-      voteId : ''
+      voteId : '',
+      newPollOption : ''
     };
     this.handleChangeVote = this.handleChangeVote.bind(this);
     this.handleVote = this.handleVote.bind(this);
+    this.handleChangeNewPollOption = this.handleChangeNewPollOption.bind(this);
+    this.handleSubmitNewPollOption = this.handleSubmitNewPollOption.bind(this);
+    this.handleUpdatePollState = this.handleUpdatePollState.bind(this);
+  }
+
+  handleChangeNewPollOption(event) {
+    this.setState({newPollOption: event.target.value});
+  }
+
+  handleSubmitNewPollOption(event) {
+    event.preventDefault();
+    axios.put('/api/newpolloption/' + this.state.pollId, {
+      newPollOption: this.state.newPollOption
+    })
+    .then((response) => {
+      console.log(response);
+      this.handleUpdatePollState()
+    })
+    .catch((error) => {
+      console.log(error);
+    })
   }
 
   handleChangeVote(event) {
@@ -26,6 +48,7 @@ class ViewPoll extends Component {
     })
     .then((response) => {
       console.log(response);
+      this.handleUpdatePollState()
     })
     .catch((error) => {
       console.log(error);
@@ -33,6 +56,16 @@ class ViewPoll extends Component {
   }
 
   componentDidMount() {
+    axios.get('/api/poll/' + this.state.pollId)
+    .then((response) => {
+      this.setState({poll: response.data});
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
+  handleUpdatePollState() {
     axios.get('/api/poll/' + this.state.pollId)
     .then((response) => {
       this.setState({poll: response.data});
@@ -86,6 +119,13 @@ class ViewPoll extends Component {
         <ul>
           {pollOptions}
         </ul>
+
+        <form onSubmit={this.handleSubmitNewPollOption}>
+          <label htmlFor="name">Add another option to the poll</label>
+          <input type="text" name="name" value={this.state.newPollOption} onChange={this.handleChangeNewPollOption} placeholder="Name" required />
+          <input type="submit" value="Submit" />
+        </form>
+
         <DeletePoll pollId={this.state.pollId} />
       </div>
     )

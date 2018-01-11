@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { Redirect } from 'react-router';
 
-class NewPoll extends Component {
+class AddPollItem extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       title: '',
-      options: '',
-      redirectToNewPage: false
+      options: ''
     };
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleOptionsChange = this.handleOptionsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
   }
 
   handleTitleChange(event) {
@@ -33,7 +29,6 @@ class NewPoll extends Component {
       options: this.state.options
     })
     .then((response) => {
-      this.setState({ redirectToNewPage: true })
       console.log(response);
     })
     .catch((error) => {
@@ -42,13 +37,6 @@ class NewPoll extends Component {
   };
 
   render() {
-
-    if (this.state.redirectToNewPage) {
-      return (
-        <Redirect to="/"/>
-      )
-    }
-
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
@@ -66,4 +54,4 @@ class NewPoll extends Component {
 
 }
 
-export default NewPoll;
+export default AddPollItem;
