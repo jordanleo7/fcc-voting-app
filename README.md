@@ -1,4 +1,4 @@
-A MERN stack JavaScript app.
+A MERN stack voting app.
 
 User Story: As an authenticated user, I can keep my polls and come back later to access them.
 
