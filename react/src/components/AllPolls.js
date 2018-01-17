@@ -36,7 +36,7 @@ class AllPolls extends Component {
     return(
       <div>
         <h3>All Polls</h3>
-        <ul>
+        <ul className="AllPollsList">
           {pollList}
         </ul>
       </div>
@@ -44,12 +44,5 @@ class AllPolls extends Component {
   }
 
 }
-
-
-
-
-
-
-
 
 export default AllPolls

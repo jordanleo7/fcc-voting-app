@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router';
+import '../index.css';
 
 class NewPoll extends Component {
 
@@ -51,7 +52,7 @@ class NewPoll extends Component {
 
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} className="newPollForm">
           <label htmlFor="title">Create a poll</label>
           <input type="text" name="title" value={this.state.title} onChange={this.handleTitleChange} placeholder="Title" required />
           <label htmlFor="options">Options</label>

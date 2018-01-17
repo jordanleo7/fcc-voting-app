@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import DeletePoll from './DeletePoll';
+import Chart from './Chart';
 
 class ViewPoll extends Component {
 
@@ -79,7 +80,7 @@ class ViewPoll extends Component {
 
     var pollTitle = this.state.poll.map((prop, index) => {
       return (
-        <h3 key={'title'}>{prop.title}</h3>
+        prop.title
       );
     })
 
@@ -106,7 +107,8 @@ class ViewPoll extends Component {
 
     return (
       <div>
-        {pollTitle}
+
+        <Chart chartData={this.state.poll} chartTitle={pollTitle} legendPosition="bottom"/>
 
         <form onSubmit={this.handleVote}>
           <select value={this.state.value} onChange={this.handleChangeVote}>
@@ -115,13 +117,9 @@ class ViewPoll extends Component {
             </select>
             <input type="submit" />
         </form>
-        <h4>Results</h4>
-        <ul>
-          {pollOptions}
-        </ul>
 
         <form onSubmit={this.handleSubmitNewPollOption}>
-          <label htmlFor="name">Add another option to the poll</label>
+          <label htmlFor="name">Add option</label>
           <input type="text" name="name" value={this.state.newPollOption} onChange={this.handleChangeNewPollOption} placeholder="Name" required />
           <input type="submit" value="Submit" />
         </form>

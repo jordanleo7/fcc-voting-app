@@ -1,5 +1,27 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.AllPollsList {
+  padding: 0;
+}
+
+.AllPollsList li {
+  list-style: none;
+  border-top: solid gray 1px;
+  padding: 10px;
+}
+
+.AllPollsList li:last-child {
+  border-bottom: solid gray 1px;
+}
+
+.AllPollsList a {
+  text-decoration: none;
+}
+
+.newPollForm {
+  background-color: orange;
 }
