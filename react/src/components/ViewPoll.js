@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import DeletePoll from './DeletePoll';
 import Chart from './Chart';
+import '../index.css';
 
 class ViewPoll extends Component {
 
@@ -69,7 +70,7 @@ class ViewPoll extends Component {
   handleUpdatePollState() {
     axios.get('/api/poll/' + this.state.pollId)
     .then((response) => {
-      this.setState({poll: response.data});
+      this.setState({poll: response.data, newPollOption: ''});
     })
     .catch((error) => {
       console.log(error);
@@ -106,25 +107,41 @@ class ViewPoll extends Component {
     })
 
     return (
-      <div>
+      <div className="container-fluid">
 
-        <Chart chartData={this.state.poll} chartTitle={pollTitle} legendPosition="bottom"/>
+        <Chart className="chart" chartData={this.state.poll} chartTitle={pollTitle} legendPosition="bottom" />
 
-        <form onSubmit={this.handleVote}>
-          <select value={this.state.value} onChange={this.handleChangeVote}>
-            <option key="choose">Vote here</option>
-            {pollOptionsVoting}
-            </select>
-            <input type="submit" />
+        <form onSubmit={this.handleVote} className="pt-3">
+          <div className="text-left">
+            <label htmlFor="voteOptions">Vote here</label>
+            <div className="form-row">
+              <div className="col-8 my-1">
+                <select className="form-control" id="voteOptions" value={this.state.value} onChange={this.handleChangeVote}>
+                <option key="choose">Choose an option</option>
+                {pollOptionsVoting}
+                </select>
+              </div>
+              <div className="col-4 my-1">
+                <button type="submit" className="btn btn-primary col-12">Vote</button>
+              </div>
+            </div>
+          </div>
         </form>
 
-        <form onSubmit={this.handleSubmitNewPollOption}>
-          <label htmlFor="name">Add option</label>
-          <input type="text" name="name" value={this.state.newPollOption} onChange={this.handleChangeNewPollOption} placeholder="Name" required />
-          <input type="submit" value="Submit" />
+        <form onSubmit={this.handleSubmitNewPollOption} className="pt-3">
+          <div className="text-left">
+            <label htmlFor="name">Add option</label>
+            <div className="form-row">
+              <input type="text" name="name" className="form-control col-8 my-1" value={this.state.newPollOption} onChange={this.handleChangeNewPollOption} placeholder="Name" required />
+              <div className="col-4 my-1">
+                <button type="submit" value="Submit" className="btn btn-primary col-12">Add</button>
+              </div>
+            </div>
+          </div>
         </form>
 
         <DeletePoll pollId={this.state.pollId} />
+
       </div>
     )
   }

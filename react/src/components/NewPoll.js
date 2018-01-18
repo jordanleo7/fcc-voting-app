@@ -16,7 +16,6 @@ class NewPoll extends Component {
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleOptionsChange = this.handleOptionsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
   }
 
   handleTitleChange(event) {
@@ -51,16 +50,22 @@ class NewPoll extends Component {
     }
 
     return (
-      <div>
-        <form onSubmit={this.handleSubmit} className="newPollForm">
-          <label htmlFor="title">Create a poll</label>
-          <input type="text" name="title" value={this.state.title} onChange={this.handleTitleChange} placeholder="Title" required />
-          <label htmlFor="options">Options</label>
-          <textarea name="options" value={this.state.options} onChange={this.handleOptionsChange} placeholder="Separate your options by new lines (return/enter)."></textarea>
-          <input type="submit" value="Submit" />
+      <div className="container-fluid pt-3 text-left">
+        <form onSubmit={this.handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="title">Poll title</label>
+            <input type="text" name="title" className="form-control" value={this.state.title} onChange={this.handleTitleChange} placeholder="Enter title" required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="options">Poll options</label>
+            <textarea name="options" className="form-control" value={this.state.options} onChange={this.handleOptionsChange} placeholder="Enter options" aria-describedby="optionsHelp"></textarea>
+            <small id="optionsHelp" class="form-text text-muted"> Separate your options by new lines (return/enter).</small>
+          </div>
+          <button type="submit" className="btn btn-primary pl-4 pr-4">Submit</button>
+          <Link to={"/"} className="btn btn-danger pl-4 pr-4 float-right">Cancel</Link>
         </form>
 
-        <Link to={"/"}>Return to All Polls</Link>
+
       </div>
     )
   }

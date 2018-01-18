@@ -5,10 +5,21 @@ class Navbar extends Component {
   render() {
     return (
       <div>
-        <h1>Make a Poll</h1>
-        <Link to={"/"}>Home</Link>
-        <span> | </span>
-        <Link to={"/newpoll"}>New</Link>
+        <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
+          <Link to={"/"} className="navbar-brand">Make a Poll</Link>
+
+          <button className="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarItems" aria-controls="navbarItems" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+          </button>
+
+          <div className="navbar-collapse collapse" id="navbarItems">
+            <ul className="navbar-nav mr-auto">
+              <li className="nav-item"><Link to={"/newpoll"} className="nav-link">New Poll</Link></li>
+              <li className="nav-item"><Link to={"/mypolls"} className="nav-link">My Polls</Link></li>
+            </ul>
+          </div>
+
+        </nav>
       </div>
     )
 

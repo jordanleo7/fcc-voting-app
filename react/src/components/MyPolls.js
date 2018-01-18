@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-class AllPolls extends Component {
+class MyPolls extends Component {
 
   constructor(props) {
     super(props);
@@ -25,7 +25,7 @@ class AllPolls extends Component {
 
     let pollList = this.state.list.map(function(poll, index){
       return (
-        <li key={poll + index} className="list-group-item">
+        <li key={poll + index}>
           <Link to={"/viewpoll/" + poll._id}>
             {poll.title}
           </Link>
@@ -33,9 +33,10 @@ class AllPolls extends Component {
       )
     });
 
-    return (
-      <div className="container-fluid pt-3">
-        <ul className="list-group">
+    return(
+      <div>
+        <h3>All Polls</h3>
+        <ul className="AllPollsList">
           {pollList}
         </ul>
       </div>
@@ -44,4 +45,4 @@ class AllPolls extends Component {
 
 }
 
-export default AllPolls
+export default MyPolls
