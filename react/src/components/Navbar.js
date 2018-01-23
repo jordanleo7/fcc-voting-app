@@ -16,6 +16,7 @@ class Navbar extends Component {
             <ul className="navbar-nav mr-auto">
               <li className="nav-item"><Link to={"/newpoll"} className="nav-link">New Poll</Link></li>
               <li className="nav-item"><Link to={"/mypolls"} className="nav-link">My Polls</Link></li>
+              <li className="nav-item">Sign in</li>
             </ul>
           </div>
 
