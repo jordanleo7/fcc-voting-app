@@ -59,7 +59,7 @@ class NewPoll extends Component {
           <div className="form-group">
             <label htmlFor="options">Poll options</label>
             <textarea name="options" className="form-control" value={this.state.options} onChange={this.handleOptionsChange} placeholder="Enter options" aria-describedby="optionsHelp"></textarea>
-            <small id="optionsHelp" class="form-text text-muted"> Separate your options by new lines (return/enter).</small>
+            <small id="optionsHelp" className="form-text text-muted"> Separate your options by new lines (return/enter).</small>
           </div>
           <button type="submit" className="btn btn-primary pl-4 pr-4">Submit</button>
           <Link to={"/"} className="btn btn-danger pl-4 pr-4 float-right">Cancel</Link>

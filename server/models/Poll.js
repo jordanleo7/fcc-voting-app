@@ -15,6 +15,6 @@ const PollSchema = new Schema({
 })
 
 // Create model
-const Poll = mongoose.model('poll', PollSchema);
+const Poll = mongoose.model('voting_app_poll', PollSchema);
 
 module.exports = Poll;

@@ -4,21 +4,15 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const urlEncodedParser = bodyParser.urlencoded({ extended: false });
 const router = express.Router();
+const passport = require('passport');
+require('dotenv').config();
 const app = express();
-const PORT = process.env.PORT || 5000;
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({'extended':'true'}));
+const cookieSession = require('cookie-session');
 
-// MongoDB
-const Poll = require('./Poll');
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/fcc-voting-app');
-mongoose.Promise = global.Promise;
+const PORT = process.env.PORT;
 
 // Priority serve any static files.
 app.use(express.static(path.resolve(__dirname, '../react/public')));
-
-
 
 // To prevent errors from Cross Origin Resource Sharing, we will set our headers to allow CORS with middleware like so:
 app.use(function(req, res, next) {
@@ -30,8 +24,64 @@ app.use(function(req, res, next) {
   next();
 });
 
+//
+// User authentication
+//
 
+app.use(cookieSession({
+  // 24 hour session
+  maxAge: 24 * 60 * 60 * 1000,
+  keys: [process.env.SESSION_COOKIE_KEY]
+}));
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+//
+// MongoDB
+//
+
+const Poll = require('./models/Poll');
+const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGO_URI);
+mongoose.Promise = global.Promise;
+
+//
+// User authentication
+//
+
+require('./config/passport');
+// app.route('/auth/github').get(passport.authenticate('github'));
+
+app.get('/auth/logout', (req,res) => {
+  res.send('logging out');
+})
+
+app.get('/auth/google', passport.authenticate('google', {
+  scope: ['profile']
+}));
+
+app.get('/auth/google/redirect', passport.authenticate('google'), (req, res) => {
+  res.redirect('/');
+});
+
+const authCheck = (req, res, next) => {
+  if (!req.user) {
+    // If user is not logged in
+    res.redirect('/auth/login');
+  } else {
+    // If logged in
+    next();
+  }
+};
+
+//
 // Answer API requests.
+//
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({'extended':'true'}));
 
 // Create a poll
 app.post('/api/newpoll', urlEncodedParser, function (req, res, next) {
@@ -93,7 +143,7 @@ app.put('/api/newpolloption/:id', urlEncodedParser, function (req, res, next) {
 })
 
 // Delete a poll
-app.delete('/api/deletepoll/:id', function (req, res, next) {
+app.delete('/api/deletepoll/:id', authCheck, function (req, res, next) {
   Poll.findOneAndRemove({'_id': req.params.id})
     .then(() => {
       res.json('Poll deleted');
@@ -104,8 +154,5 @@ app.delete('/api/deletepoll/:id', function (req, res, next) {
 app.get('*', function(request, response) {
   response.sendFile(path.resolve(__dirname, '../react/public', 'index.html'));
 });
-
-
-
 
 app.listen(PORT, () => console.log(`Express listening on port ${PORT}`))
