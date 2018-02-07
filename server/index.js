@@ -1,21 +1,24 @@
 // Express
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const bodyParser = require('body-parser');
 const urlEncodedParser = bodyParser.urlencoded({ extended: false });
 const router = express.Router();
 const passport = require('passport');
 require('dotenv').config();
+
 const app = express();
 const cookieSession = require('cookie-session');
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 
 // Priority serve any static files.
 app.use(express.static(path.resolve(__dirname, '../react/public')));
 
 // To prevent errors from Cross Origin Resource Sharing, we will set our headers to allow CORS with middleware like so:
-app.use(function(req, res, next) {
+
+/* app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
@@ -23,7 +26,10 @@ app.use(function(req, res, next) {
 
   next();
 });
+*/
 
+app.use(cors());
+app.options('*', cors());
 //
 // User authentication
 //
@@ -52,10 +58,10 @@ mongoose.Promise = global.Promise;
 //
 
 require('./config/passport');
-// app.route('/auth/github').get(passport.authenticate('github'));
 
 app.get('/auth/logout', (req,res) => {
-  res.send('logging out');
+  req.logout();
+  res.redirect('http://localhost:3000/');
 })
 
 app.get('/auth/google', passport.authenticate('google', {
@@ -63,16 +69,16 @@ app.get('/auth/google', passport.authenticate('google', {
 }));
 
 app.get('/auth/google/redirect', passport.authenticate('google'), (req, res) => {
-  res.redirect('/');
+  res.redirect('http://localhost:3000/');
 });
 
 const authCheck = (req, res, next) => {
-  if (!req.user) {
-    // If user is not logged in
-    res.redirect('/auth/login');
-  } else {
+  if (req.user) {
     // If logged in
     next();
+  } else {
+    // If user is not logged in
+    res.redirect('/auth/login');
   }
 };
 
