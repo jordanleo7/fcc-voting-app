@@ -3,24 +3,6 @@ import axios from 'axios';
 
 class Login extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-    this.handleLoginGoogle = this.handleLoginGoogle.bind(this);
-  }
-
-  handleLoginGoogle(event) {
-    event.preventDefault();
-    axios.get('/auth/google')
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  };
-
   render () {
     return (
       <div className="container">

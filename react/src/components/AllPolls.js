@@ -34,7 +34,8 @@ class AllPolls extends Component {
     });
 
     return (
-      <div className="container-fluid pt-3 pb-3">
+      <div className="container-fluid pt-3 pb-3 mb-5">
+        <h3>All Polls</h3>
         <ul className="list-group">
           {pollList}
         </ul>

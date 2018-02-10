@@ -28,7 +28,7 @@ class DeletePoll extends Component {
   render() {
     if (this.state.redirectToNewPage) {
       return (
-        <Redirect to="/"/>
+        <Redirect to="/mypolls"/>
       )
     }
 

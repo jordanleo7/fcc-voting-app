@@ -16,8 +16,8 @@ class Navbar extends Component {
             <ul className="navbar-nav mr-auto">
               <li className="nav-item"><Link to={"/newpoll"} className="nav-link">New Poll</Link></li>
               <li className="nav-item"><Link to={"/mypolls"} className="nav-link">My Polls</Link></li>
-              <li className="nav-item"><Link to={"/auth/login"} className="nav-link">Sign in</Link></li>
-              <li className="nav-item"><Link to={"/auth/logout"} className="nav-link">Sign out</Link></li>
+              <li className="nav-item"><Link to={"/auth/login"} className="nav-link">Log in</Link></li>
+              <li className="nav-item"><Link to={"/auth/logout"} className="nav-link">Log out</Link></li>
             </ul>
           </div>
 

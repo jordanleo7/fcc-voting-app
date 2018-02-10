@@ -16,24 +16,13 @@ const PORT = process.env.PORT || 5000;
 // Priority serve any static files.
 app.use(express.static(path.resolve(__dirname, '../react/public')));
 
-// To prevent errors from Cross Origin Resource Sharing, we will set our headers to allow CORS with middleware like so:
-
-/* app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
-
-  next();
-});
-*/
-
+// Cross Origin Resource Sharing
 app.use(cors());
 app.options('*', cors());
+
 //
 // User authentication
 //
-
 app.use(cookieSession({
   // 24 hour session
   maxAge: 24 * 60 * 60 * 1000,
@@ -47,7 +36,6 @@ app.use(passport.session());
 //
 // MongoDB
 //
-
 const Poll = require('./models/Poll');
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGO_URI);
@@ -56,7 +44,6 @@ mongoose.Promise = global.Promise;
 //
 // User authentication
 //
-
 require('./config/passport');
 
 app.get('/auth/logout', (req,res) => {
@@ -69,7 +56,7 @@ app.get('/auth/google', passport.authenticate('google', {
 }));
 
 app.get('/auth/google/redirect', passport.authenticate('google'), (req, res) => {
-  res.redirect('http://localhost:3000/');
+  res.redirect('http://localhost:3000/mypolls');
 });
 
 const authCheck = (req, res, next) => {
@@ -82,19 +69,47 @@ const authCheck = (req, res, next) => {
   }
 };
 
+app.get('/isLoggedIn', function (req, res) {
+  if (req.user) {
+    console.log(req.user);
+    res.send(req.user);
+  } else {
+    console.log('Not logged in');
+    res.send('Not logged in');
+  }
+})
+
+// Middleware that exposes the user's profile as well as login/logout URLs to
+// any templates. These are available as `profile`, `login`, and `logout`.
+function addTemplateVariables (req, res, next) {
+  res.locals.profile = req.user;
+  res.locals.login = `/auth/login?return=${encodeURIComponent(req.originalUrl)}`;
+  res.locals.logout = `/auth/logout?return=${encodeURIComponent(req.originalUrl)}`;
+  next();
+}
+
 //
 // Answer API requests.
 //
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':'true'}));
+
+// My polls / Logged in user's polls
+app.get('/api/mypolls', function (req, res) {
+  Poll.find({'creator': req.user._id}).then(eachOne => {
+    res.json(eachOne);
+  })
+})
+
+
+
 
 // Create a poll
 app.post('/api/newpoll', urlEncodedParser, function (req, res, next) {
 
   let newTitle = req.body.title;
   let newOptions = req.body.options.split(/\r?\n/);
-  let newCreator = 'John Smith';
+  let newCreator = req.user._id;
 
   let newPoll = new Poll({
     title: newTitle,

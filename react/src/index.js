@@ -4,6 +4,52 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import axios from 'axios';
+
+function storageAvailable(type) {
+  try {
+      var storage = window[type],
+          x = '__storage_test__';
+      storage.setItem(x, x);
+      storage.removeItem(x);
+      return true;
+  }
+  catch(e) {
+      return e instanceof DOMException && (
+          // everything except Firefox
+          e.code === 22 ||
+          // Firefox
+          e.code === 1014 ||
+          // test name field too, because code might not be present
+          // everything except Firefox
+          e.name === 'QuotaExceededError' ||
+          // Firefox
+          e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+          // acknowledge QuotaExceededError only if there's something already stored
+          storage.length !== 0;
+  }
+}
+
+function handleLoginGoogle(event) {
+  //event.preventDefault();
+  if (storageAvailable('localStorage')) {
+    // Yippee! We can use localStorage awesomeness
+    console.log('Yes localStorage')
+    axios.get('isLoggedIn')
+    .then((response) => {
+      console.log(response);
+      let token = JSON.stringify(response.data);
+      localStorage.setItem("token", token);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+  else {
+    // Too bad, no localStorage for us
+    console.log('No localStorage')
+  }
+};
 
 ReactDOM.render(
   <BrowserRouter>
@@ -12,3 +58,4 @@ ReactDOM.render(
   document.getElementById('root'));
 
 registerServiceWorker();
+handleLoginGoogle();
