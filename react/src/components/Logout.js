@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
 
 class Logout extends Component {
 /*
@@ -22,6 +20,7 @@ class Logout extends Component {
               <button type="submit" className="btn btn-primary">Logout</button>
             </form>
 */
+
   render () {
     return (
       <div className="container">

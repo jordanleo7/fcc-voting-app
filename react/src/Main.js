@@ -1,12 +1,11 @@
 import React from 'react'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import AllPolls from './components/AllPolls'
 import NewPoll from './components/NewPoll'
 import ViewPoll from './components/ViewPoll'
 import MyPolls from './components/MyPolls'
 import Login from './components/Login'
 import Logout from './components/Logout'
-import axios from 'axios';
 
 const Main = () => (
   <main>

@@ -38,8 +38,15 @@ function handleLoginGoogle(event) {
     axios.get('isLoggedIn')
     .then((response) => {
       console.log(response);
-      let token = JSON.stringify(response.data);
-      localStorage.setItem("token", token);
+      const token = response.data;
+      //localStorage.setItem("token", token);
+      console.log(token);
+      if (token.username) {
+        localStorage.setItem("token", JSON.stringify(token));
+        console.log('token data: ', JSON.parse(localStorage.getItem('token')));
+      } else {
+        localStorage.setItem("token", null)
+      }
     })
     .catch((error) => {
       console.log(error);

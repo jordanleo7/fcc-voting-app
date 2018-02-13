@@ -1,7 +1,59 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+function UserGreeting(props) {
+  return <p>Logged in as {props.isLoggedIn}</p>;
+}
+
+function GuestGreeting(props) {
+  return <p>Logged out</p>;
+}
+
+function Greeting(props) {
+  console.log(props.isLoggedIn)
+  if (props.isLoggedIn) {
+    return <UserGreeting />;
+  }
+  return <GuestGreeting />;
+}
+
+class LoginControl extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoggedIn: ''
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ isLoggedIn: JSON.parse(localStorage.getItem('token')) || 'Not logged in' })
+  }
+
+  componentWillUnmount() {
+    this.state.isLoggedIn
+  }
+
+  render() {
+    console.log('nav', this.state.isLoggedIn)
+
+    let loginButton = null;
+    if (this.state.isLoggedIn.username) {
+      loginButton = <p>Logged in as {this.state.isLoggedIn.username}</p>;
+      } else {
+      loginButton = <p>Logged out</p>;
+    }
+
+    return (
+      <div>
+        <Greeting isLoggedIn={this.state.isLoggedIn.username} />
+        {loginButton}
+      </div>
+    );
+  }
+}
+
 class Navbar extends Component {
+
   render() {
     return (
       <div>
@@ -21,6 +73,7 @@ class Navbar extends Component {
             </ul>
           </div>
 
+            <LoginControl />
         </nav>
       </div>
     )
