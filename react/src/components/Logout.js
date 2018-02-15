@@ -26,7 +26,7 @@ class Logout extends Component {
       <div className="container">
         <div className="row mt-3">
           <div className="col-12">
-            <a href="http://localhost:5000/auth/logout" className="btn btn-primary">
+            <a href="/auth/logout" className="btn btn-primary">
               Log out
             </a>
           </div>

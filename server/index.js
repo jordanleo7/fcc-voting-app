@@ -43,20 +43,20 @@ mongoose.Promise = global.Promise;
 
 //
 // User authentication
-//
+// http://localhost:3000/
 require('./config/passport');
 
 app.get('/auth/logout', (req,res) => {
   req.logout();
-  res.redirect('http://localhost:3000/');
+  res.redirect('/');
 })
 
 app.get('/auth/google', passport.authenticate('google', {
   scope: ['profile']
 }));
-
+// http://localhost:3000/mypolls
 app.get('/auth/google/redirect', passport.authenticate('google'), (req, res) => {
-  res.redirect('http://localhost:3000/mypolls');
+  res.redirect('/mypolls');
 });
 
 const authCheck = (req, res, next) => {

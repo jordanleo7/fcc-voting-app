@@ -7,7 +7,7 @@ class Login extends Component {
       <div className="container">
         <div className="row mt-3">
           <div className="col-12">
-            <a href="http://localhost:5000/auth/google" className="btn btn-primary">
+            <a href="/auth/google" className="btn btn-primary">
               Log in with Google
             </a>
           </div>
