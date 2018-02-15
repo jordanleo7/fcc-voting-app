@@ -101,9 +101,6 @@ app.get('/api/mypolls', function (req, res) {
   })
 })
 
-
-
-
 // Create a poll
 app.post('/api/newpoll', urlEncodedParser, function (req, res, next) {
 
@@ -150,9 +147,36 @@ app.get('/api/poll/:id', function (req, res, next) {
 app.put("/api/vote/:id", urlEncodedParser, function(req, res, next){
   Poll.findOne({'_id':req.params.id}, function (err, poll) {
     if (err) return err;
+
+    // Get voter's IP address
+    var head = req.headers;
+    var answer = new Object();
+    answer.ipaddress = head['x-forwarded-for'].split(',')[0];
+
+    // Find user ID in poll
+    var foundUser = poll.voted.find(function(e) {
+      return e === req.user._id;
+    })
+
+    // Find IP address in poll
+    var foundIP = poll.voted.find(function(e) {
+      return e === answer.ipaddress;
+    })
+
+    console.log('found: ', foundUser, foundIP);
+
+    if (foundUser || foundIP) {
+      console.log('user already voted');
+    } else {
+      poll.options[req.body.choice].votes += 1;
+      if (req.user._id) {
+        poll.voted.push(req.user._id);
+      }
+      poll.voted.push(answer.ipaddress);
+      poll.save();
+    }
+    
     console.log(poll, req.body.choice);
-    poll.options[req.body.choice].votes += 1;
-    poll.save();
     res.send(poll);
   })
 })

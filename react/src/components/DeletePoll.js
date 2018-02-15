@@ -33,9 +33,9 @@ class DeletePoll extends Component {
     }
 
     return (
-      <div className="pt-4">
+      <div>
         <form onSubmit={this.handleDeletePoll}>
-          <button type="submit" className="btn btn-danger">Delete this poll</button>
+          <button type="submit" className="btn btn-danger">Delete</button>
         </form>
       </div>
     )

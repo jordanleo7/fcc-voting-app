@@ -23,7 +23,6 @@ class MyPolls extends Component {
   }
 
   render() {
-
     let pollList = this.state.list.map(function(poll, index){
       return (
         <li key={poll + index} className="list-group-item">
@@ -38,7 +37,7 @@ class MyPolls extends Component {
     return(
       <div className="container-fluid pt-3 pb-3">
         <h3>My Polls</h3>
-        <ul className="list-group">
+        <ul className="list-group pb-5">
           {pollList}
         </ul>
       </div>

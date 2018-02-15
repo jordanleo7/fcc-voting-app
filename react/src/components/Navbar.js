@@ -1,21 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
-function UserGreeting(props) {
-  return <p>Logged in as {props.isLoggedIn}</p>;
-}
-
-function GuestGreeting(props) {
-  return <p>Logged out</p>;
-}
-
-function Greeting(props) {
-  console.log(props.isLoggedIn)
-  if (props.isLoggedIn) {
-    return <UserGreeting />;
-  }
-  return <GuestGreeting />;
-}
+import axios from 'axios';
 
 class LoginControl extends Component {
   constructor(props) {
@@ -26,26 +11,34 @@ class LoginControl extends Component {
   }
 
   componentDidMount() {
-    this.setState({ isLoggedIn: JSON.parse(localStorage.getItem('token')) || 'Not logged in' })
-  }
-
-  componentWillUnmount() {
-    this.state.isLoggedIn
+    axios.get('isLoggedIn')
+    .then((response) => {
+      console.log(response)
+      this.setState({ isLoggedIn: response.data || 'Not logged in' })
+    })
+    .catch((error) => {
+      console.log(error)
+    });
   }
 
   render() {
-    console.log('nav', this.state.isLoggedIn)
 
     let loginButton = null;
     if (this.state.isLoggedIn.username) {
-      loginButton = <p>Logged in as {this.state.isLoggedIn.username}</p>;
+      loginButton = <ul className="navbar-nav mr-auto">
+          <li className="nav-item"><Link to={"/newpoll"} className="nav-link">New Poll</Link></li>
+          <li className="nav-item"><Link to={"/mypolls"} className="nav-link">My Polls</Link></li>
+          <li className="nav-item"><Link to={"/auth/logout"} className="nav-link">Log out</Link></li>
+        </ul>
+      //<p>Logged in as {this.state.isLoggedIn.username}</p>;
       } else {
-      loginButton = <p>Logged out</p>;
+        loginButton = <ul className="navbar-nav mr-auto">
+          <li className="nav-item"><Link to={"/auth/login"} className="nav-link">Log in</Link></li>
+        </ul>
     }
 
     return (
       <div>
-        <Greeting isLoggedIn={this.state.isLoggedIn.username} />
         {loginButton}
       </div>
     );
@@ -65,15 +58,10 @@ class Navbar extends Component {
           </button>
 
           <div className="navbar-collapse collapse" id="navbarItems">
-            <ul className="navbar-nav mr-auto">
-              <li className="nav-item"><Link to={"/newpoll"} className="nav-link">New Poll</Link></li>
-              <li className="nav-item"><Link to={"/mypolls"} className="nav-link">My Polls</Link></li>
-              <li className="nav-item"><Link to={"/auth/login"} className="nav-link">Log in</Link></li>
-              <li className="nav-item"><Link to={"/auth/logout"} className="nav-link">Log out</Link></li>
-            </ul>
-          </div>
 
-            <LoginControl />
+              <LoginControl />
+
+          </div>    
         </nav>
       </div>
     )

@@ -10,7 +10,7 @@ const OptionSchema = new Schema({
 const PollSchema = new Schema({
   title: String,
   options: [OptionSchema],
-  voted: String,
+  voted: Array,
   creator: String
 })
 

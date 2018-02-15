@@ -5,7 +5,7 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import axios from 'axios';
-
+/*
 function storageAvailable(type) {
   try {
       var storage = window[type],
@@ -57,7 +57,7 @@ function handleLoginGoogle(event) {
     console.log('No localStorage')
   }
 };
-
+*/
 ReactDOM.render(
   <BrowserRouter>
     <App />
@@ -65,4 +65,4 @@ ReactDOM.render(
   document.getElementById('root'));
 
 registerServiceWorker();
-handleLoginGoogle();
+//handleLoginGoogle();
