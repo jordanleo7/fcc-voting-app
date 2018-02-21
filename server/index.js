@@ -197,7 +197,7 @@ app.delete('/api/deletepoll/:id', authCheck, function (req, res, next) {
 
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', function(request, response) {
-  response.sendFile(path.resolve(__dirname, '../react/public', 'index.html'));
+  response.sendFile(path.resolve(__dirname, '../react/build', 'index.html'));
 });
 
 app.listen(PORT, () => console.log(`Express listening on port ${PORT}`))
