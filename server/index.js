@@ -155,7 +155,9 @@ app.put("/api/vote/:id", urlEncodedParser, function(req, res, next){
 
     // Find user ID in poll
     var foundUser = poll.voted.find(function(e) {
-      return e === req.user._id;
+      if (req.user) {
+        return e === req.user._id;
+      }
     })
 
     // Find IP address in poll
@@ -169,7 +171,7 @@ app.put("/api/vote/:id", urlEncodedParser, function(req, res, next){
       console.log('user already voted');
     } else {
       poll.options[req.body.choice].votes += 1;
-      if (req.user._id) {
+      if (req.user) {
         poll.voted.push(req.user._id);
       }
       poll.voted.push(answer.ipaddress);
@@ -181,7 +183,7 @@ app.put("/api/vote/:id", urlEncodedParser, function(req, res, next){
   })
 })
 
-app.put('/api/newpolloption/:id', urlEncodedParser, function (req, res, next) {
+app.put('/api/newpolloption/:id', authCheck, urlEncodedParser, function (req, res, next) {
   Poll.findOneAndUpdate({'_id':req.params.id}, {$addToSet: {options: {name: req.body.newPollOption, votes: 0}}}, {new: true}).then(updatedPoll => {
     res.send(updatedPoll);
   })

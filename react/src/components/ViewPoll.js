@@ -137,6 +137,7 @@ class ViewPoll extends Component {
                 <button type="submit" value="Submit" className="btn btn-primary col-12">Add</button>
               </div>
             </div>
+            <small id="optionHelp" className="form-text text-muted">Must be logged in to add an option.</small>
           </div>
         </form>
 
