@@ -14,7 +14,7 @@ const cookieSession = require('cookie-session');
 const PORT = process.env.PORT || 5000;
 
 // Priority serve any static files.
-app.use(express.static(path.resolve(__dirname, '../react/public')));
+app.use(express.static(path.resolve(__dirname, '../react/build')));
 
 // Cross Origin Resource Sharing
 app.use(cors());
