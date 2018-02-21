@@ -40,10 +40,12 @@ class Chart extends Component {
       <div className="chart">
         <Doughnut
           data={convertedPollData}
+          width={320}
+          height={320}
           options={{
             width: this.props.width,
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             title: {
               display: this.props.displayTitle,
               text: this.props.chartTitle,
