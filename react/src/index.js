@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom'
 import './index.css';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+//import registerServiceWorker from './registerServiceWorker';
 import axios from 'axios';
 /*
 function storageAvailable(type) {
@@ -64,5 +64,5 @@ ReactDOM.render(
   </BrowserRouter>,
   document.getElementById('root'));
 
-registerServiceWorker();
-//handleLoginGoogle();
+//registerServiceWorker();
+//handleLoginGoogle(); Testing this for /auth/google fix (currently blank screen as of 4/30/2018)
